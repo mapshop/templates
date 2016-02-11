@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<!-- add a title for the overall map page here -->
+	<title>TITLE</title>
+
+	<!-- Leaflet stylesheet -->
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+
+	<!-- Leaflet.js -->
+	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+
+	<!-- Stamen Tiles -->
+	<script src="http://maps.stamen.com/js/tile.stamen.js"></script>
+
+	<style>
+	html, body, #mapDiv {
+		height: 100%;
+		width: 100%;
+	}
+	.leaflet-popup-content-wrapper {
+		opacity: 0.9;
+		border-radius: 5px;
+	}
+	h1 {
+        position: absolute;
+        z-index: 100;
+        top: 10px;
+        left: 60px;
+        padding: 8px 15px;
+        margin: 0;
+        color: whitesmoke;
+        font-size: 1.3em;
+        background: rgba(25,100,50,0.8);
+        border-radius: 0; 
+        font-weight: normal;
+    }
+	</style>
+</head>
+<body>
+	<div id='mapDiv'></div>
+
+	<!-- add the javascript file here -->
+	<script src = "1.js"></script>
+		
+<script>
+	//Create map
+	var map = new L.map('mapDiv', {
+		//change the centering and zoom as needed
+		center: [38.055,-84.483],
+		zoom: 14,
+		minZoom: 10,
+		maxZoom: 17,
+		zoomControl: true,
+		dragging: true,
+	});
+
+	// Add tile layer
+	var layer = new L.StamenTileLayer("toner-lite");
+
+	map.addLayer(layer);
+	//"data" is the var name in the js script file
+	var geoJSONLayer = L.geoJson(data, {
+		pointToLayer: function (feature, latlng) {
+			return L.circleMarker (latlng, {
+				//this is where you can change the circles
+				radius: 4,
+				fillColor: "#2eb8b8",
+				color: "#000",
+				weight: 1,
+				opacity: 1,
+				fillOpacity: 0.8
+			});
+		},
+
+        onEachFeature: function(feature, layer) {   
+            var props = layer.feature.properties;
+            //change the "address" to whatever the property that you want to visualize
+            layer.bindPopup("<b>"+props.address+"</b>");
+                
+        }
+    }).addTo(map);
+		     
+</script>
+<header>
+
+	<!-- title that will show up on the screen -->
+	<h1>Title</h1>
+</header>
+	</body>
+</html>
